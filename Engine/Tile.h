@@ -18,6 +18,7 @@ public:
 	bool IsInsideClickedPoint(Vei2& clickedPoint);
 
 	bool IsRevealed();
+	bool IsFlagged();
 	void RevealTile();
 	void FlagTile();
 
@@ -30,4 +31,6 @@ private:
 	static constexpr int pixelWidth { 16 };
 	static constexpr int pixelHeight { 16 };
 	Vei2 position{};
+
+	bool isFlagged{ false };
 };

@@ -63,6 +63,11 @@ bool Tile::IsRevealed()
 	return state == State::REVEALED;
 }
 
+bool Tile::IsFlagged()
+{
+	return isFlagged;
+}
+
 void Tile::RevealTile()
 {
 	state = State::REVEALED;
@@ -70,5 +75,11 @@ void Tile::RevealTile()
 
 void Tile::FlagTile()
 {
-	state = State::FLAG;
+	isFlagged = !isFlagged;
+
+	if (isFlagged)
+		state = State::FLAG;
+	else
+		state = State::HIDDEN;
+	
 }

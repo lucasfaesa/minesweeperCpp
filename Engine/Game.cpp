@@ -39,11 +39,15 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (wnd.mouse.LeftIsPressed()) {
-		minefield.OnBoardLeftClick(Vei2(wnd.mouse.GetPos().first, wnd.mouse.GetPos().second));
-	}
-	if (wnd.mouse.RightIsPressed()) {
-		minefield.OnBoardRightClick(Vei2(wnd.mouse.GetPos().first, wnd.mouse.GetPos().second));
+	while (!wnd.mouse.IsEmpty()) {
+
+		const Mouse::Event event = wnd.mouse.Read();
+		if (event.GetType() == Mouse::Event::Type::LPress) {
+			minefield.OnBoardLeftClick(Vei2(wnd.mouse.GetPos().first, wnd.mouse.GetPos().second));
+		}
+		else if (event.GetType() == Mouse::Event::Type::RPress) {
+			minefield.OnBoardRightClick(Vei2(wnd.mouse.GetPos().first, wnd.mouse.GetPos().second));
+		}
 	}
 }
 

@@ -59,7 +59,7 @@ void Minefield::OnBoardLeftClick(Vei2& clickPoint)
 	for (Tile& tile : fieldTiles) {
 
 		if (tile.IsInsideClickedPoint(clickPoint)) {
-			if (!tile.IsRevealed()) {
+			if (!tile.IsRevealed() && !tile.IsFlagged()) {
 				tile.RevealTile();
 			}
 			break;
