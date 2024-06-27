@@ -19,6 +19,7 @@ public:
 
 	bool IsRevealed();
 	void RevealTile();
+	void FlagTile();
 
 	static constexpr int GetPixelWidth() { return pixelWidth; }
 	static constexpr int GetPixelHeight() { return pixelWidth; }

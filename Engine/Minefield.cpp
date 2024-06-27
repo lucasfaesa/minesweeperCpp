@@ -54,13 +54,27 @@ void Minefield::Draw(Graphics& gfx)
 	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y - 2, Colors::Green);
 }
 
-void Minefield::OnBoardClick(Vei2& clickPoint)
+void Minefield::OnBoardLeftClick(Vei2& clickPoint)
 {
 	for (Tile& tile : fieldTiles) {
 
 		if (tile.IsInsideClickedPoint(clickPoint)) {
 			if (!tile.IsRevealed()) {
 				tile.RevealTile();
+			}
+			break;
+		}
+
+	}
+}
+
+void Minefield::OnBoardRightClick(Vei2& clickPoint)
+{
+	for (Tile& tile : fieldTiles) {
+
+		if (tile.IsInsideClickedPoint(clickPoint)) {
+			if (!tile.IsRevealed()) {
+				tile.FlagTile();
 			}
 			break;
 		}

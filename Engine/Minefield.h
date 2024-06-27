@@ -10,7 +10,8 @@ public:
 	Minefield() = default;
 	Minefield(int numberOfMines);
 	void Draw(Graphics& gfx);
-	void OnBoardClick(Vei2& clickPoint);
+	void OnBoardLeftClick(Vei2& clickPoint);
+	void OnBoardRightClick(Vei2& clickPoint);
 private:
 	static constexpr int gridWidth = 9;
 	static constexpr int gridHeight = 9;

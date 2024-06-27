@@ -67,3 +67,8 @@ void Tile::RevealTile()
 {
 	state = State::REVEALED;
 }
+
+void Tile::FlagTile()
+{
+	state = State::FLAG;
+}
