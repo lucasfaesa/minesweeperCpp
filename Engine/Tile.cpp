@@ -1,7 +1,7 @@
 #include "Tile.h"
 
 Tile::Tile(Vei2 position, bool hasBomb)
-	:position(position), hasBomb(hasBomb)
+	:position(position), hasMine(hasBomb)
 {
 
 }
@@ -19,7 +19,7 @@ void Tile::Draw(Graphics& gfx)
 			SpriteCodex::DrawTileFlag(centeredPos, gfx);
 			break;
 		case State::REVEALED:
-			if(hasBomb)
+			if(hasMine)
 				SpriteCodex::DrawTileBomb(centeredPos, gfx);
 			else
 				SpriteCodex::DrawTile0(centeredPos, gfx);
@@ -35,9 +35,14 @@ const Vei2& Tile::GetSize() const
 	return Vei2(pixelWidth, pixelHeight);
 }
 
-bool Tile::HasBomb() const
+bool Tile::HasMine() const
 {
-	return hasBomb;
+	return hasMine;
+}
+
+void Tile::AddMine()
+{
+	hasMine = true;
 }
 
 bool Tile::IsInsideClickedPoint(Vei2& clickedPoint)

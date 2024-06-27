@@ -4,12 +4,7 @@ Minefield::Minefield(int numberOfMines)
 {
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> xDist(0, gridWidth - 1);
-	std::uniform_int_distribution<int> yDist(0, gridHeight - 1);
-
-	/*for (int i = 0; i < numberOfMines; i++) {
-
-	}*/
+	std::uniform_int_distribution<int> dist(0, gridWidth * gridHeight - 1);
 
 	const Vei2 firstTilePosCenter = { gridWorldPosition.x - gridLocalCenterX, gridWorldPosition.y - gridLocalCenterY };
 
@@ -25,6 +20,18 @@ Minefield::Minefield(int numberOfMines)
 			
 		}
 	}
+
+	int countMines{ 0 };
+
+	do
+	{
+		if (!fieldTiles[dist(rng)].HasMine()) {
+			fieldTiles[dist(rng)].AddMine();
+			countMines++;
+		}
+
+	} while (countMines != numberOfMines);
+	
 }
 
 void Minefield::Draw(Graphics& gfx)

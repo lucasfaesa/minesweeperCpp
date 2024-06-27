@@ -13,7 +13,8 @@ public:
 	void Draw(Graphics& gfx);
 
 	const Vei2& GetSize() const;
-	bool HasBomb() const;
+	bool HasMine() const;
+	void AddMine();
 	bool IsInsideClickedPoint(Vei2& clickedPoint);
 
 	bool IsRevealed();
@@ -23,7 +24,7 @@ public:
 	static constexpr int GetPixelHeight() { return pixelWidth; }
 private:
 	State state = State::HIDDEN;
-	bool hasBomb = false;
+	bool hasMine = false;
 
 	static constexpr int pixelWidth { 16 };
 	static constexpr int pixelHeight { 16 };
