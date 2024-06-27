@@ -63,6 +63,9 @@ public:
 	{
 		DrawRect( rect.left,rect.top,rect.right,rect.bottom,c );
 	}
+	void DrawRect(Vei2& position, int width, int height, Color c) {
+		DrawRect(position.x - width * 0.5f, position.y - height * 0.5f, position.x + width * 0.5f, position.y + height * 0.5f, c);
+	}
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
