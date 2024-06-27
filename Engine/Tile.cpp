@@ -10,7 +10,8 @@ void Tile::Draw(Graphics& gfx)
 {
 	Vei2 centeredPos = { position.x - int(pixelWidth * 0.5f) ,  position.y - int(pixelHeight * 0.5f) };
 
-	switch (state) {
+	if (!isGameOver) {
+		switch (state) {
 		case State::HIDDEN:
 			SpriteCodex::DrawTileButton(centeredPos, gfx);
 			break;
@@ -19,15 +20,74 @@ void Tile::Draw(Graphics& gfx)
 			SpriteCodex::DrawTileFlag(centeredPos, gfx);
 			break;
 		case State::REVEALED:
+			if (hasMine)
+				SpriteCodex::DrawTileBomb(centeredPos, gfx);
+			else
+				DrawByBombsAround(centeredPos, gfx);
+			break;
+		}
+	}
+	else {
+		switch (state) {
+		case State::HIDDEN:
 			if(hasMine)
 				SpriteCodex::DrawTileBomb(centeredPos, gfx);
 			else
 				SpriteCodex::DrawTile0(centeredPos, gfx);
 			break;
+		case State::FLAG:
+			if (hasMine) {
+				SpriteCodex::DrawTileBomb(centeredPos, gfx);
+				SpriteCodex::DrawTileFlag(centeredPos, gfx);
+			}
+			else {
+				SpriteCodex::DrawTile0(centeredPos, gfx);
+				SpriteCodex::DrawTileFlag(centeredPos, gfx);
+				SpriteCodex::DrawTileCross(centeredPos, gfx);
+			}	
+			break;
+		case State::REVEALED:
+			if(hasMine)
+				SpriteCodex::DrawTileBomb(centeredPos, gfx);
+			break;
+		}
 	}
+	
 
-	//center
-	gfx.PutPixel(position.x, position.y, Colors::Red);
+}
+
+void Tile::DrawByBombsAround(Vei2& centeredPos, Graphics& gfx)
+{
+	switch (bombsAroundQty) {
+		case 0:
+			SpriteCodex::DrawTile0(centeredPos, gfx);
+			break;
+		case 1:
+			SpriteCodex::DrawTile1(centeredPos, gfx);
+			break;
+		case 2:
+			SpriteCodex::DrawTile2(centeredPos, gfx);
+			break;
+		case 3:
+			SpriteCodex::DrawTile3(centeredPos, gfx);
+			break;
+		case 4:
+			SpriteCodex::DrawTile4(centeredPos, gfx);
+			break;
+		case 5:
+			SpriteCodex::DrawTile5(centeredPos, gfx);
+			break;
+		case 6:
+			SpriteCodex::DrawTile6(centeredPos, gfx);
+			break;
+		case 7:
+			SpriteCodex::DrawTile7(centeredPos, gfx);
+			break;
+		case 8:
+			SpriteCodex::DrawTile8(centeredPos, gfx);
+			break;
+	}
+			
 }
 
 const Vei2& Tile::GetSize() const
@@ -83,3 +143,20 @@ void Tile::FlagTile()
 		state = State::HIDDEN;
 	
 }
+
+void Tile::SetBombsAroundQuantity(int qty)
+{
+	bombsAroundQty = qty;
+}
+
+const Vei2& Tile::GetPosition() const
+{
+	return position;
+}
+
+void Tile::SetGameOver()
+{
+	isGameOver = true;
+}
+
+

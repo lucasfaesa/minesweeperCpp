@@ -21,10 +21,16 @@ public:
 	bool IsFlagged();
 	void RevealTile();
 	void FlagTile();
+	void SetBombsAroundQuantity(int qty);
+	const Vei2& GetPosition() const;
+	void SetGameOver();
 
 	static constexpr int GetPixelWidth() { return pixelWidth; }
 	static constexpr int GetPixelHeight() { return pixelWidth; }
 private:
+
+	void DrawByBombsAround(Vei2& centeredPos, Graphics& gfx);
+	
 	State state = State::HIDDEN;
 	bool hasMine = false;
 
@@ -33,4 +39,8 @@ private:
 	Vei2 position{};
 
 	bool isFlagged{ false };
+
+	bool isGameOver{ false };
+
+	int bombsAroundQty{ 0 };
 };

@@ -32,6 +32,41 @@ Minefield::Minefield(int numberOfMines)
 
 	} while (countMines != numberOfMines);
 	
+	const std::vector<Vei2> directions = {
+	Vei2(-Tile::GetPixelWidth(), -Tile::GetPixelHeight()), // up-left
+	Vei2(0, -Tile::GetPixelHeight()),                     // up
+	Vei2(Tile::GetPixelWidth(), -Tile::GetPixelHeight()), // up-right
+	Vei2(-Tile::GetPixelWidth(), 0),                      // left
+	Vei2(Tile::GetPixelWidth(), 0),                       // right
+	Vei2(-Tile::GetPixelWidth(), Tile::GetPixelHeight()), // down-left
+	Vei2(0, Tile::GetPixelHeight()),                      // down
+	Vei2(Tile::GetPixelWidth(), Tile::GetPixelHeight())   // down-right
+	};
+
+	for (int i = 0; i < gridWidth * gridHeight; i++)
+	{
+		int qty = 0;
+		Vei2 currentPos = fieldTiles[i].GetPosition();
+
+		for (const Vei2& direction : directions)
+		{
+			Vei2 neighborPos = currentPos + direction;
+
+			for (int j = 0; j < gridWidth * gridHeight; j++)
+			{
+				if (i == j)
+					continue;
+
+				if (fieldTiles[j].IsInsideClickedPoint(neighborPos) && fieldTiles[j].HasMine())
+				{
+					qty++;
+				}
+			}
+		}
+
+		fieldTiles[i].SetBombsAroundQuantity(qty);
+	}
+
 }
 
 void Minefield::Draw(Graphics& gfx)
@@ -41,27 +76,20 @@ void Minefield::Draw(Graphics& gfx)
 	for (Tile& tile : fieldTiles) {
 		tile.Draw(gfx);
 	}
-
-	//center
-	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x+1, gridWorldPosition.y, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x-1, gridWorldPosition.y, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y+1, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y-1, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x + 2, gridWorldPosition.y, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x - 2, gridWorldPosition.y, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y + 2, Colors::Green);
-	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y - 2, Colors::Green);
 }
 
 void Minefield::OnBoardLeftClick(Vei2& clickPoint)
 {
+	if (isGameOver) return;
+
 	for (Tile& tile : fieldTiles) {
 
 		if (tile.IsInsideClickedPoint(clickPoint)) {
 			if (!tile.IsRevealed() && !tile.IsFlagged()) {
 				tile.RevealTile();
 			}
+			if (tile.HasMine())
+				SetGameOver();
 			break;
 		}
 
@@ -70,6 +98,8 @@ void Minefield::OnBoardLeftClick(Vei2& clickPoint)
 
 void Minefield::OnBoardRightClick(Vei2& clickPoint)
 {
+	if (isGameOver) return;
+
 	for (Tile& tile : fieldTiles) {
 
 		if (tile.IsInsideClickedPoint(clickPoint)) {
@@ -79,6 +109,23 @@ void Minefield::OnBoardRightClick(Vei2& clickPoint)
 			break;
 		}
 
+	}
+}
+
+void Minefield::SetGameOver()
+{
+	isGameOver = true;
+	RevealAllTiles();
+}
+
+void Minefield::RevealAllTiles()
+{
+	for (Tile& tile : fieldTiles) {
+		if (!tile.IsRevealed()) {
+			tile.SetGameOver();
+			//tile.RevealTile();
+		}
+			
 	}
 }
 

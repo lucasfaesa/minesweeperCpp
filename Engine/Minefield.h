@@ -12,6 +12,8 @@ public:
 	void Draw(Graphics& gfx);
 	void OnBoardLeftClick(Vei2& clickPoint);
 	void OnBoardRightClick(Vei2& clickPoint);
+	void SetGameOver();
+	void RevealAllTiles();
 private:
 	static constexpr int gridWidth = 9;
 	static constexpr int gridHeight = 9;
@@ -25,4 +27,6 @@ private:
 	Tile fieldTiles[gridWidth * gridHeight];
 
 	const Vei2 gridWorldPosition{ 400,300 };
+
+	bool isGameOver{ false };
 };
