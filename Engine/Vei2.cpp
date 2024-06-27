@@ -4,8 +4,19 @@
 Vei2::Vei2( int x_in,int y_in )
 	:
 	x( x_in ),
-	y( y_in )
+	y( y_in ),
+	fX(x_in),
+	fY(y_in)
 {
+}
+
+Vei2::Vei2(float x_in, float y_in) : 
+	fX(x_in),
+	fY(y_in),
+	x((int)x_in),
+	y((int)y_in)
+{
+
 }
 
 Vei2 Vei2::operator+( const Vei2& rhs ) const

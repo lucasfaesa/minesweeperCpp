@@ -39,6 +39,9 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (wnd.mouse.LeftIsPressed()) {
+		minefield.OnBoardClick(Vei2(wnd.mouse.GetPos().first, wnd.mouse.GetPos().second));
+	}
 }
 
 void Game::ComposeFrame()

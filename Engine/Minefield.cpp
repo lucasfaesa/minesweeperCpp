@@ -11,15 +11,15 @@ Minefield::Minefield(int numberOfMines)
 
 	}*/
 
-	const Vei2 firstTilePos = { gridWorldPosition.x - gridLocalCenterX, gridWorldPosition.y - gridLocalCenterY };
+	const Vei2 firstTilePosCenter = { gridWorldPosition.x - gridLocalCenterX, gridWorldPosition.y - gridLocalCenterY };
 
 	int index{ 0 };
-	for (int i = 1; i < gridWidth; i++)
+	for (int i = 0; i < gridWidth; i++)
 	{
-		for (int j = 1; j < gridHeight; j++) {
+		for (int j = 0; j < gridHeight; j++) {
 
-			int posX = firstTilePos.x + (i * Tile::GetPixelWidth());
-			int posY = firstTilePos.y + (j * Tile::GetPixelHeight());
+			float posX = firstTilePosCenter.x + (i * Tile::GetPixelWidth());
+			float posY = firstTilePosCenter.y + (j * Tile::GetPixelHeight());
 
 			fieldTiles[index++] = Tile(Vei2(posX, posY), false);
 			
@@ -29,8 +29,35 @@ Minefield::Minefield(int numberOfMines)
 
 void Minefield::Draw(Graphics& gfx)
 {
+	gfx.DrawRect(gridWorldPosition, gridPixelWidth, gridPixelHeight, SpriteCodex::baseColor);
+
 	for (Tile& tile : fieldTiles) {
 		tile.Draw(gfx);
+	}
+
+	//center
+	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x+1, gridWorldPosition.y, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x-1, gridWorldPosition.y, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y+1, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y-1, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x + 2, gridWorldPosition.y, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x - 2, gridWorldPosition.y, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y + 2, Colors::Green);
+	gfx.PutPixel(gridWorldPosition.x, gridWorldPosition.y - 2, Colors::Green);
+}
+
+void Minefield::OnBoardClick(Vei2& clickPoint)
+{
+	for (Tile& tile : fieldTiles) {
+
+		if (tile.IsInsideClickedPoint(clickPoint)) {
+			if (!tile.IsRevealed()) {
+				tile.RevealTile();
+			}
+			break;
+		}
+
 	}
 }
 
